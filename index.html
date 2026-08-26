@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>中文作文批注 · 粘贴作文</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>中文作文批注（手动）</h1>
+  </header>
+  <main class="container narrow">
+    <h2>请粘贴作文</h2>
+    <p class="muted">本工具为手动批注模式：粘贴作文后在教师页逐处标注，不调用 AI。仅支持粘贴文字，不支持文件上传。</p>
+    <textarea id="essay" rows="14" placeholder="在这里粘贴学生作文……"></textarea>
+    <button id="start" class="primary block">开始批改</button>
+    <p id="msg" class="msg"></p>
+  </main>
+  <script src="home.js"></script>
+</body>
+</html>
