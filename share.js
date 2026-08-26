@@ -6,23 +6,27 @@ function escapeHtml(s) {
   return (s == null ? '' : String(s)).replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
 }
 
-function loadFromHash() {
+async function loadFromHash() {
   const m = location.hash.match(/[#&]s=([^&]+)/);
   if (!m) return false;
   try {
-    const d = decodeShare(m[1]);
+    const d = await decodeShare(m[1]);
     if (!d || !d.text) return false;
     render(d);
     return true;
   } catch (e) {
-    $('essay').textContent = '链接解析失败（数据可能已损坏）。';
+    if (typeof DecompressionStream === 'undefined') {
+      $('essay').textContent = '当前浏览器不支持解压，请用较新版本的浏览器（Chrome/Safari 16.4+/Edge）打开，或在电脑端打开。';
+    } else {
+      $('essay').textContent = '链接解析失败（数据可能在复制/转发过程中被截断或改坏，请用“复制”按钮重新获取完整链接）。';
+    }
     return true; // 已处理，不再走服务端
   }
 }
 
 async function load() {
   // 优先读取内嵌在 URL 中的数据（自包含链接，无需后端）
-  if (loadFromHash()) return;
+  if (await loadFromHash()) return;
   // 兼容旧版：从服务端按 id 取
   try {
     const r = await fetch('/api/share/' + encodeURIComponent(id));

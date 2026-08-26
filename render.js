@@ -25,15 +25,50 @@ function buildSegments(text, comments) {
 }
 
 // ---------- 分享数据编/解码（自包含 URL，无需后端存储） ----------
-function encodeShare(obj) {
-  const json = JSON.stringify(obj);
-  const bytes = new TextEncoder().encode(json);
+// 采用 gzip 压缩后再 base64，链接体积约为原文的 1/3~1/4，
+// 大幅降低长链接在微信/跨设备复制时被截断或改坏的概率。
+// 编码结果以 'z' 为前缀；旧版未压缩链接（无前缀）仍可正常解码。
+
+function bytesToB64(bytes) {
   let bin = '';
   bytes.forEach((b) => (bin += String.fromCharCode(b)));
-  return encodeURIComponent(btoa(bin));
+  return btoa(bin);
 }
-function decodeShare(str) {
-  const bin = atob(decodeURIComponent(str));
+function b64ToBytes(b64) {
+  const bin = atob(b64);
+  return Uint8Array.from(bin, (c) => c.charCodeAt(0));
+}
+async function gzipBytes(bytes) {
+  const cs = new CompressionStream('gzip');
+  const writer = cs.writable.getWriter();
+  writer.write(bytes);
+  writer.close();
+  const ab = await new Response(cs.readable).arrayBuffer();
+  return new Uint8Array(ab);
+}
+async function gunzipBytes(bytes) {
+  const ds = new DecompressionStream('gzip');
+  const writer = ds.writable.getWriter();
+  writer.write(bytes);
+  writer.close();
+  const ab = await new Response(ds.readable).arrayBuffer();
+  return new Uint8Array(ab);
+}
+
+async function encodeShare(obj) {
+  const json = JSON.stringify(obj);
+  const raw = new TextEncoder().encode(json);
+  const gz = await gzipBytes(raw);
+  return encodeURIComponent('z' + bytesToB64(gz));
+}
+async function decodeShare(enc) {
+  const str = decodeURIComponent(enc);
+  if (str[0] === 'z') {
+    const raw = await gunzipBytes(b64ToBytes(str.slice(1)));
+    return JSON.parse(new TextDecoder().decode(raw));
+  }
+  // 兼容旧版未压缩链接
+  const bin = atob(str);
   const bytes = Uint8Array.from(bin, (c) => c.charCodeAt(0));
   return JSON.parse(new TextDecoder().decode(bytes));
 }
