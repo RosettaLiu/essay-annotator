@@ -13,6 +13,8 @@
   </header>
 
   <main class="teacher">
+    <div id="restore-note" class="banner hidden">已自动恢复上次未完成的批改（保存在本浏览器）。</div>
+
     <!-- 左：作文原文 -->
     <section class="pane essay-pane">
       <h2>作文原文</h2>
@@ -56,6 +58,15 @@
         <textarea id="add-exp" rows="2" placeholder="解释"></textarea>
         <button type="submit" class="primary">新增批注</button>
       </form>
+
+      <h2>数据工具</h2>
+      <div class="tools">
+        <button id="import-link-btn" type="button">从分享链接恢复</button>
+        <button id="import-json-btn" type="button">导入备份(.json)</button>
+        <button id="clear-btn" type="button" class="danger">清除本地草稿</button>
+      </div>
+      <p class="hint">本页批改会自动保存到本浏览器，刷新或关闭后仍可恢复。也可用“导入备份”随时还原。若觉得链接太长怕复制出错，可“下载备份(.json)”留底。</p>
+      <input type="file" id="file-input" accept="application/json,.json" hidden />
 
       <button id="share-btn" class="primary block">完成批改并生成分享链接</button>
       <div id="share-result"></div>

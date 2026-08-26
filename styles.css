@@ -76,8 +76,12 @@ button.danger { color: #d93025; border-color: #f3c2bd; }
 .add-form .inline { display: flex; gap: 8px; }
 .add-form .inline select { width: 50%; }
 
-.linkbox { display: flex; gap: 8px; margin-top: 6px; }
-.linkbox input { flex: 1; font-size: 13px; }
+.banner { background: #e6f4ea; border: 1px solid #b7dfc4; color: #1e7e34; padding: 10px 14px; border-radius: 8px; margin: 4px 0 0; font-size: 14px; }
+.tools { display: flex; gap: 8px; flex-wrap: wrap; }
+.tools button { flex: 1 1 auto; }
+.linkbox { width: 100%; font-size: 13px; line-height: 1.5; resize: vertical; margin-top: 6px; }
+.share-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.share-actions button { flex: 1 1 auto; }
 .hint { color: #8a8f99; font-size: 12px; }
 
 /* ---------- 学生分享页（Mobile First） ---------- */
