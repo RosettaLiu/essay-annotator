@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>作文批改结果</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>作文批改结果</h1>
+  </header>
+
+  <main class="share container">
+    <section id="overall-summary" class="card"></section>
+
+    <details class="ov-details card">
+      <summary>查看总体评价详情（优点 / 问题 / 建议）</summary>
+      <div id="ov-full"></div>
+    </details>
+
+    <h2 class="essay-title">作文正文</h2>
+    <p class="muted">点击高亮文字可查看老师批注。</p>
+    <div id="essay" class="essay"></div>
+  </main>
+
+  <div id="sheet-backdrop" class="backdrop hidden"></div>
+  <div id="sheet" class="sheet hidden">
+    <div class="sheet-grip"></div>
+    <div id="sheet-content"></div>
+  </div>
+
+  <script src="render.js"></script>
+  <script src="share.js"></script>
+</body>
+</html>
